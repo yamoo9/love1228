@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map_canvas {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+    <input type="hidden" value="37.521843" id="lat" />
+    <input type="hidden" value="127.0368945" id="lot" />
+    <input type="hidden" value="마리아쥬스퀘어" id="loc" />
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=crg21ux109"></script>
+    <script type="text/javascript">
+
+        var map;
+        var infowindow;
+        var marker;
+
+        $(document).ready(function () {
+
+            var lat = $("#lat").val();
+            var lot = $("#lot").val();
+            var loc = $("#loc").val();
+
+            var latlng = new naver.maps.LatLng(lat, lot);
+            //console.log(latlng);
+
+            map = new naver.maps.Map('map_canvas', {
+                center: latlng,
+                zoom: 16
+            });
+
+            marker = new naver.maps.Marker({
+                position: latlng,
+                map: map,
+                
+                draggable: false,
+
+                shape: {
+                    coords: [0, 70, 20, 100, 40, 70, 30, 70, 70, 0, 10, 70],
+                    type: "poly"
+                }
+            });
+
+            infowindow = new naver.maps.InfoWindow({
+                content: ""
+            });
+
+            if (loc != "") {
+                var contentString = [
+                    '<div style="padding-left:2px;padding-right:2px;">',
+                    '   <div style="font-size:15px;letter-spacing:-1px;font-weight:bold">' + loc + '</div>',
+                    '</div>'
+                ].join('');
+                infowindow.setContent(contentString);
+                infowindow.open(map, marker);
+            }
+
+        })
+
+    </script>
+</body>
+</html>
